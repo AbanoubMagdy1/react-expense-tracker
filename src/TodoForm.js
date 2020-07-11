@@ -23,16 +23,20 @@ function TodoForm(props){
     return (
         <div className="TodoForm">
             <ValidatorForm
+                style={{padding : "0.5rem 1rem"}}
                 onSubmit={handleSubmit}
             >
                 <TextValidator
+                    
                     label="Todo"
                     onChange={handleChange}
                     value={todo}
+                    fullWidth
                     validators={['required', 'unique']}
                     errorMessages={['this field is required', 'Todo is already existed']}
                 />
                 <Button 
+                    style={{marginLeft : "1rem"}}
                     type="submit"
                     variant='contained'
                     color="primary"    

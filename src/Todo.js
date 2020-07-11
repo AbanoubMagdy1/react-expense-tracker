@@ -44,6 +44,7 @@ const Todo = SortableElement((props) =>{
                         label="Todo"
                         onChange={(e) => {setTodo(e.target.value)}}
                         value={todo}
+                        autoFocus
                         validators={['required', 'unique']}
                         errorMessages={['this field is required', 'Todo is already existed']}
                     />

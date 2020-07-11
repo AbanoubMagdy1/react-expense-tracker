@@ -27,18 +27,23 @@
     height: 100%;
     width : 40px;
     transform: scaleX(0);
-    transform-origin: left;
     font-size: 0.8rem;
-    transition: .3s transform;
+    transition: .5s transform;
     margin-right: 5px;
+    transform-origin : right;
     cursor: pointer;
 }
 .Todo:hover svg{
     transform: scaleX(1);
+    transform-origin: left;
+
 }
 
 @media (max-width : 720px){
     .Todo svg{
         transform: scale(1);
+    }
+    .Todo{
+        height : 60px;
     }
 }

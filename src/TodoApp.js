@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
+import useLocalStorageState from './Hooks/useLocalStorageState'
 import TodoForm from './TodoForm';
 import Todos from './Todos'
 import './TodoApp.css'
@@ -7,11 +8,7 @@ import arrayMove from 'array-move'
 function TodoApp(){
 
     const starterTodos = ["Wash the car", "Study Your lessons", "Feed the dog"];
-    const stored = JSON.parse(localStorage.getItem("todos"))
-    const [todos, setTodos] = useState(stored || starterTodos);
-    useEffect(() => {
-        localStorage.setItem("todos",JSON.stringify(todos))
-    },[todos])
+    const [todos, setTodos] = useLocalStorageState("todos", starterTodos);
     const handleSubmit = (todo) => {
         setTodos([...todos, todo])
     }
