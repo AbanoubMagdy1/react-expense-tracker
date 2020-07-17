@@ -1,21 +1,19 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import Todo from './Todo'
 import {SortableContainer} from 'react-sortable-hoc'
 import "./Todos.css"
-
+import {TodosContext} from './Context/TodosContext'
 const Todos = SortableContainer((props) => {
+    const todos = useContext(TodosContext)
     return (
         <div>
-            {props.todos.map((todo, i) => {
+            {todos.map((todo, i) => {
                 return (
                     <Todo
                         key={i}
-                        todo={todo}
-                        todos={props.todos}
-                        index={i}
                         i={i}
-                        remove={props.remove}
-                        edit={props.edit}
+                        todo={todo}
+                        index={i}
                     />
                 )
             })}

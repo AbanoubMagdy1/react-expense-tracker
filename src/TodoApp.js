@@ -1,45 +1,25 @@
-import React from 'react'
-import useLocalStorageState from './Hooks/useLocalStorageState'
+import React,{useContext} from 'react'
 import TodoForm from './TodoForm';
 import Todos from './Todos'
 import './TodoApp.css'
 import arrayMove from 'array-move'
+import {TodosContext, DispatchContext} from './Context/TodosContext'
 
 function TodoApp(){
-
-    const starterTodos = ["Wash the car", "Study Your lessons", "Feed the dog"];
-    const [todos, setTodos] = useLocalStorageState("todos", starterTodos);
-    const handleSubmit = (todo) => {
-        setTodos([...todos, todo])
-    }
-
+    const todos = useContext(TodosContext)
+    const dispatch = useContext(DispatchContext)
     const onSortEnd = ({oldIndex, newIndex}) => {
         const newTodos = arrayMove(todos, oldIndex, newIndex);
-        setTodos(newTodos)
-    }
-    const remove = (todo) => {
-        console.log(todos, todo)
-        setTodos(todos.filter(t => t !== todo))
-    }
-    const edit = (todo, index) => {
-        console.log(todo, index)
-        const newTodos = todos.map((t, i) => i === index ? todo : t)
-        setTodos(newTodos)
+        dispatch({type : "REARRANGE", todos : newTodos})
     }
     return (
         <div className="TodoApp">
             <h1>Todo app</h1>
-            <TodoForm
-                todos={todos}
-                handleSubmit={handleSubmit}
-            />
-            <Todos
-                todos={todos}
+            <TodoForm/>
+            <Todos 
                 onSortEnd={onSortEnd}
                 axis="y"
                 distance={20}
-                remove={remove}
-                edit={edit}
             />
         </div>
     )

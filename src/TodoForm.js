@@ -1,30 +1,29 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useContext, memo} from 'react'
 import Button from '@material-ui/core/Button'
 import "./TodoForm.css" 
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator'
+import {DispatchContext} from './Context/TodosContext'
 
-function TodoForm(props){
-    useEffect(() => {
-        ValidatorForm.addValidationRule('unique', (value) => {
-            return props.todos.every(todo => todo !== value)
-        });
-    })
 
+function TodoForm(){
+    const dispatch = useContext(DispatchContext)
+  
     const [todo, setTodo] = useState("")
 
     const handleChange = (e) => {
         setTodo(e.target.value)
     }
 
-    const handleSubmit = () => {
-        props.handleSubmit(todo);
+    const handleSubmissoin = () => {
+        dispatch({type : "ADD", task : todo});
         setTodo("");
     }
+    console.log("TODO FORM RENDER")
     return (
         <div className="TodoForm">
             <ValidatorForm
                 style={{padding : "0.5rem 1rem"}}
-                onSubmit={handleSubmit}
+                onSubmit={handleSubmissoin}
             >
                 <TextValidator
                     
@@ -32,8 +31,8 @@ function TodoForm(props){
                     onChange={handleChange}
                     value={todo}
                     fullWidth
-                    validators={['required', 'unique']}
-                    errorMessages={['this field is required', 'Todo is already existed']}
+                    validators={['required']}
+                    errorMessages={['this field is required']}
                 />
                 <Button 
                     style={{marginLeft : "1rem"}}
@@ -49,4 +48,4 @@ function TodoForm(props){
     )
 }
 
-export default TodoForm
+export default memo(TodoForm)

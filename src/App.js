@@ -1,5 +1,6 @@
 import React from 'react';
 import TodoApp from './TodoApp';
+import {TodosProvider} from './Context/TodosContext'
 import './App.css';
 /*import BoxContainer from './BoxContainer'
 import CounterHook from './CounterHook'
@@ -9,7 +10,9 @@ import FormHook from './FormHook'*/
 function App() {
   return (
     <div className="App">
-      <TodoApp/>
+      <TodosProvider>
+        <TodoApp/>
+      </TodosProvider>
     </div>
   );
 }

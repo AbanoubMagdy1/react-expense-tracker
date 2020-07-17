@@ -1,52 +1,49 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext, memo} from 'react'
 import "./Todo.css"
 import {SortableElement} from 'react-sortable-hoc'
 import DeleteIcon from '@material-ui/icons/Delete'
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
 import Button from '@material-ui/core/Button'
+import {DispatchContext} from './Context/TodosContext';
+
 
 const Todo = SortableElement((props) =>{
+    const dispatch  = useContext(DispatchContext);
     const [deleted, setDelete] = useState(false);
-    const [edit, setEdit] = useState(false);
+    const [editing, setEditing] = useState(false);
     const [todo, setTodo] = useState(props.todo)
-   
+    console.log("TODO RERENDERED", props.todo)
     useEffect(() => {
-        ValidatorForm.addValidationRule('unique', (value) => {
-            console.log(props.todo)
-            return props.todos.every(todo => todo !== value) || value === props.todo
-        });    
-    },[edit])
+        setEditing(false)
+        setTodo(props.todo);  
+    },[props]);
 
-    useEffect(() => {
-        setTodo(props.todo);
-        setEdit(false);    
-    },[props.todos]);
     const handleSubmit = () => {
-        props.edit(todo, props.i)
+        dispatch({type : "EDIT", task : todo, index : props.i})
     }
-    const remove = () => {
+    const removal = () => {
         setDelete(true);
         setTimeout(() => {
             setDelete(false)
-            props.remove(props.todo)
+            dispatch({type : "REMOVE", task : props.todo})
         },400)
     }
     return (
         <div className={`Todo ${deleted ? 'disable' : ''}`}>  
-            <DeleteIcon onClick={remove}/>
+            <DeleteIcon onClick={removal}/>
             <div className="body">
-                { edit 
+                { editing 
                 ? (
                     <ValidatorForm
-                    onSubmit={handleSubmit}
-                >
+                        onSubmit={handleSubmit}
+                    >
                     <TextValidator
                         label="Todo"
                         onChange={(e) => {setTodo(e.target.value)}}
                         value={todo}
                         autoFocus
-                        validators={['required', 'unique']}
-                        errorMessages={['this field is required', 'Todo is already existed']}
+                        validators={['required']}
+                        errorMessages={['this field is required']}
                     />
                     <Button 
                         type="submit"
@@ -63,7 +60,7 @@ const Todo = SortableElement((props) =>{
                         {props.todo}
                     </div>
                     <Button
-                        onClick={() => {setEdit(true)}}
+                        onClick={() => {setEditing(true)}}
                         variant="contained"
                         color="secondary"
                     >
@@ -78,4 +75,4 @@ const Todo = SortableElement((props) =>{
     )
 })
 
-export default Todo
+export default memo(Todo)
